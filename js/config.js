@@ -52,16 +52,16 @@ const CONFIG = {
     ANIMATION_SPEED: 0.1,
     
     // Demo Mode Settings
-    DEMO_MODE: true, // Set to false when Firebase is configured
+    DEMO_MODE: false, // Set to false when Firebase is configured
     
-    // Firebase Configuration
+    // Firebase Configuration - REPLACE WITH YOUR ACTUAL CONFIG
     FIREBASE_CONFIG: {
-        apiKey: "your-api-key",
-        authDomain: "your-project.firebaseapp.com",
-        projectId: "your-project-id",
-        storageBucket: "your-project.appspot.com",
-        messagingSenderId: "123456789",
-        appId: "your-app-id"
+        apiKey: "AIzaSyBmVPhafeiAEd-q6OfEntNjSvBGXT5VkNs",
+        authDomain: "arena-champions.firebaseapp.com",
+        projectId: "arena-champions",
+        storageBucket: "arena-champions.firebasestorage.app",
+        messagingSenderId: "549508130471",
+        appId: "1:549508130471:web:35e85e0564806e9dc3dd82"
     }
 };
 
