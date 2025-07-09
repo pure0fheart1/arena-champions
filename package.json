@@ -1,0 +1,42 @@
+{
+  "name": "arena-champions",
+  "version": "1.0.0",
+  "description": "A dynamic 1v1 top-down shooter with unique champions and tactical gameplay",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve .",
+    "dev": "npx serve . --live",
+    "build": "echo 'No build process needed for this client-side game'",
+    "test": "echo 'No tests specified' && exit 0"
+  },
+  "keywords": [
+    "game",
+    "shooter",
+    "arena",
+    "champions",
+    "multiplayer",
+    "javascript",
+    "html5",
+    "canvas",
+    "firebase"
+  ],
+  "author": "Arena Champions Team",
+  "license": "MIT",
+  "dependencies": {
+    "firebase": "^10.0.0"
+  },
+  "devDependencies": {
+    "serve": "^14.0.0"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/arena-champions.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/arena-champions/issues"
+  },
+  "homepage": "https://github.com/your-username/arena-champions#readme"
+} 

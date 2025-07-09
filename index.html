@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arena Champions</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Main Game Container -->
+    <div id="game-container">
+        <!-- Lobby Screen -->
+        <div id="lobby-screen" class="screen">
+            <div class="lobby-header">
+                <h1>Arena Champions</h1>
+                <div id="demo-indicator" class="demo-indicator" style="display: none;">
+                    🎮 DEMO MODE - <a href="#" onclick="showFirebaseHelp()">Configure Firebase for multiplayer</a>
+                </div>
+                <div class="player-info">
+                    <span>Player: <span id="player-name">Loading...</span></span>
+                </div>
+            </div>
+            
+            <div class="lobby-content">
+                <div class="lobby-actions">
+                    <button id="host-game-btn" class="btn primary">Host Game</button>
+                    <button id="vs-bot-btn" class="btn secondary">VS Bot</button>
+                    <button id="refresh-games-btn" class="btn">Refresh Games</button>
+                </div>
+                
+                <div class="games-list">
+                    <h3>Available Games</h3>
+                    <div id="games-container">
+                        <div class="no-games">No games available. Host one to get started!</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Champion Select Screen -->
+        <div id="champion-select-screen" class="screen hidden">
+            <div class="champion-select-header">
+                <h2>Choose Your Champion</h2>
+                <div class="timer">
+                    <span id="select-timer">30</span>s
+                </div>
+            </div>
+            
+            <div class="champions-grid">
+                <div class="champion-card" data-champion="vanguard">
+                    <div class="champion-icon">🛡️</div>
+                    <h3>Vanguard</h3>
+                    <p class="champion-type">Tank</p>
+                    <div class="champion-abilities">
+                        <div class="ability">
+                            <strong>Weapon:</strong> Shotgun
+                        </div>
+                        <div class="ability">
+                            <strong>Passive:</strong> Shield after 5s
+                        </div>
+                        <div class="ability">
+                            <strong>Q:</strong> Charge
+                        </div>
+                        <div class="ability">
+                            <strong>E:</strong> Ground Slam
+                        </div>
+                    </div>
+                </div>
+
+                <div class="champion-card" data-champion="ranger">
+                    <div class="champion-icon">🏹</div>
+                    <h3>Ranger</h3>
+                    <p class="champion-type">Marksman</p>
+                    <div class="champion-abilities">
+                        <div class="ability">
+                            <strong>Weapon:</strong> Rifle
+                        </div>
+                        <div class="ability">
+                            <strong>Passive:</strong> Speed on hit
+                        </div>
+                        <div class="ability">
+                            <strong>Q:</strong> Piercing Shot
+                        </div>
+                        <div class="ability">
+                            <strong>E:</strong> Scout Trap
+                        </div>
+                    </div>
+                </div>
+
+                <div class="champion-card" data-champion="mage">
+                    <div class="champion-icon">🔮</div>
+                    <h3>Mage</h3>
+                    <p class="champion-type">Burst Caster</p>
+                    <div class="champion-abilities">
+                        <div class="ability">
+                            <strong>Weapon:</strong> Energy Bolts
+                        </div>
+                        <div class="ability">
+                            <strong>Passive:</strong> 4th attack AOE
+                        </div>
+                        <div class="ability">
+                            <strong>Q:</strong> Fireball
+                        </div>
+                        <div class="ability">
+                            <strong>E:</strong> Teleport
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="selection-status">
+                <div class="player-selection">
+                    <span id="player1-selection">Player 1: Selecting...</span>
+                    <span id="player2-selection">Player 2: Selecting...</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="game-screen" class="screen hidden">
+            <div class="game-ui">
+                <div class="top-ui">
+                    <div class="player-info-left">
+                        <div class="health-bar">
+                            <div class="health-fill" id="player1-health"></div>
+                            <span class="health-text" id="player1-health-text">100</span>
+                        </div>
+                        <div class="abilities">
+                            <div class="ability-slot" id="player1-q">Q</div>
+                            <div class="ability-slot" id="player1-e">E</div>
+                        </div>
+                    </div>
+                    
+                    <div class="game-status">
+                        <div class="round-info">
+                            <span id="round-status">Round 1</span>
+                            <span id="match-score">0 - 0</span>
+                        </div>
+                        <div class="game-message" id="game-message"></div>
+                    </div>
+                    
+                    <div class="player-info-right">
+                        <div class="health-bar">
+                            <div class="health-fill" id="player2-health"></div>
+                            <span class="health-text" id="player2-health-text">100</span>
+                        </div>
+                        <div class="abilities">
+                            <div class="ability-slot" id="player2-q">Q</div>
+                            <div class="ability-slot" id="player2-e">E</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <canvas id="game-canvas" width="1000" height="600"></canvas>
+                
+                <div class="scoreboard hidden" id="scoreboard">
+                    <div class="scoreboard-content">
+                        <h3>Scoreboard</h3>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Player</th>
+                                    <th>Kills</th>
+                                    <th>Deaths</th>
+                                    <th>Damage</th>
+                                </tr>
+                            </thead>
+                            <tbody id="scoreboard-body">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Victory Screen -->
+        <div id="victory-screen" class="screen hidden">
+            <div class="victory-content">
+                <h2 id="victory-title">Victory!</h2>
+                <div class="final-score">
+                    <div id="final-scoreboard"></div>
+                </div>
+                <button id="return-lobby-btn" class="btn primary">Return to Lobby</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="screen">
+        <div class="loading-content">
+            <h2>Loading Arena Champions...</h2>
+            <div class="loading-spinner"></div>
+        </div>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js"></script>
+    
+    <!-- Game Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/firebase.js"></script>
+    <script src="js/champions.js"></script>
+    <script src="js/arena.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/bot.js"></script>
+    <script src="js/lobby.js"></script>
+    <script src="js/multiplayer.js"></script>
+    <script src="js/audio.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html> 

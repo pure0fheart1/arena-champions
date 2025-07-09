@@ -1,0 +1,549 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    overflow: hidden;
+    color: white;
+}
+
+#game-container {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+}
+
+.screen {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.3s ease;
+}
+
+.screen.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Loading Screen */
+#loading-screen {
+    background: #0a0a0a;
+    z-index: 1000;
+}
+
+.loading-content {
+    text-align: center;
+}
+
+.loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 3px solid #333;
+    border-top: 3px solid #fff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 20px auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Lobby Screen */
+#lobby-screen {
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    padding: 20px;
+}
+
+.lobby-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.lobby-header h1 {
+    font-size: 3em;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+.demo-indicator {
+    background: rgba(255, 152, 0, 0.2);
+    border: 2px solid #ff9800;
+    border-radius: 8px;
+    padding: 10px;
+    margin: 10px 0;
+    text-align: center;
+    font-weight: bold;
+}
+
+.demo-indicator a {
+    color: #ffeb3b;
+    text-decoration: underline;
+}
+
+.player-info {
+    font-size: 1.2em;
+    opacity: 0.8;
+}
+
+.lobby-content {
+    width: 100%;
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.lobby-actions {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+.btn {
+    padding: 15px 30px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.btn.primary {
+    background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+    color: white;
+}
+
+.btn.primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+}
+
+.btn.secondary {
+    background: linear-gradient(45deg, #4caf50, #45a049);
+    color: white;
+}
+
+.btn.secondary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
+}
+
+.btn:not(.primary):not(.secondary) {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.btn:not(.primary):not(.secondary):hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+.games-list {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 20px;
+    backdrop-filter: blur(10px);
+}
+
+.games-list h3 {
+    margin-bottom: 20px;
+    font-size: 1.5em;
+    text-align: center;
+}
+
+#games-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.game-item {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.game-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+}
+
+.no-games {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.6);
+    font-style: italic;
+    padding: 20px;
+}
+
+/* Champion Select Screen */
+#champion-select-screen {
+    background: linear-gradient(135deg, #2c1810 0%, #8b4513 100%);
+    padding: 20px;
+}
+
+.champion-select-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.champion-select-header h2 {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+}
+
+.timer {
+    font-size: 1.5em;
+    color: #ff6b6b;
+    font-weight: bold;
+}
+
+.champions-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    margin-bottom: 40px;
+    max-width: 1200px;
+}
+
+.champion-card {
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.champion-card:hover {
+    transform: translateY(-5px);
+    border-color: #ff6b6b;
+    box-shadow: 0 10px 30px rgba(255, 107, 107, 0.3);
+}
+
+.champion-card.selected {
+    border-color: #4caf50;
+    background: rgba(76, 175, 80, 0.1);
+}
+
+.champion-icon {
+    font-size: 4em;
+    margin-bottom: 15px;
+}
+
+.champion-card h3 {
+    font-size: 1.8em;
+    margin-bottom: 5px;
+}
+
+.champion-type {
+    color: #ff6b6b;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.champion-abilities {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    text-align: left;
+}
+
+.ability {
+    font-size: 0.9em;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.selection-status {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+}
+
+.player-selection {
+    display: flex;
+    justify-content: space-around;
+    gap: 40px;
+}
+
+/* Game Screen */
+#game-screen {
+    background: #1a1a1a;
+    padding: 0;
+    justify-content: flex-start;
+}
+
+.game-ui {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.top-ui {
+    height: 100px;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    border-bottom: 2px solid #333;
+}
+
+.player-info-left, .player-info-right {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 250px;
+}
+
+.health-bar {
+    position: relative;
+    height: 20px;
+    background: #333;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 2px solid #555;
+}
+
+.health-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #4caf50, #8bc34a);
+    transition: width 0.3s ease;
+    width: 100%;
+}
+
+.health-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 0.8em;
+    font-weight: bold;
+    color: white;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+}
+
+.abilities {
+    display: flex;
+    gap: 10px;
+}
+
+.ability-slot {
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.ability-slot.ready {
+    background: rgba(76, 175, 80, 0.2);
+    border-color: #4caf50;
+}
+
+.ability-slot.cooldown {
+    background: rgba(255, 107, 107, 0.2);
+    border-color: #ff6b6b;
+}
+
+.game-status {
+    text-align: center;
+    flex: 1;
+}
+
+.round-info {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}
+
+.game-message {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #ff6b6b;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+}
+
+#game-canvas {
+    flex: 1;
+    background: #2a2a2a;
+    cursor: crosshair;
+}
+
+/* Scoreboard */
+.scoreboard {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.9);
+    border: 2px solid #333;
+    border-radius: 12px;
+    padding: 20px;
+    z-index: 100;
+}
+
+.scoreboard-content {
+    min-width: 400px;
+}
+
+.scoreboard h3 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.5em;
+}
+
+.scoreboard table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.scoreboard th, .scoreboard td {
+    padding: 10px;
+    text-align: center;
+    border-bottom: 1px solid #333;
+}
+
+.scoreboard th {
+    background: rgba(255, 255, 255, 0.1);
+    font-weight: bold;
+}
+
+/* Victory Screen */
+#victory-screen {
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 200;
+}
+
+.victory-content {
+    background: linear-gradient(135deg, #4caf50 0%, #8bc34a 100%);
+    border-radius: 20px;
+    padding: 40px;
+    text-align: center;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+}
+
+#victory-title {
+    font-size: 3em;
+    margin-bottom: 30px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+.final-score {
+    margin-bottom: 30px;
+    font-size: 1.2em;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .lobby-header h1 {
+        font-size: 2em;
+    }
+    
+    .champions-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .top-ui {
+        height: 80px;
+        padding: 0 10px;
+    }
+    
+    .player-info-left, .player-info-right {
+        width: 180px;
+    }
+    
+    .ability-slot {
+        width: 30px;
+        height: 30px;
+        font-size: 0.8em;
+    }
+    
+    #game-canvas {
+        width: 100%;
+        height: auto;
+    }
+}
+
+/* Animations */
+@keyframes damage-flash {
+    0% { background-color: rgba(255, 0, 0, 0.5); }
+    100% { background-color: transparent; }
+}
+
+.damage-flash {
+    animation: damage-flash 0.2s ease-out;
+}
+
+@keyframes ability-activation {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+.ability-activation {
+    animation: ability-activation 0.3s ease-out;
+}
+
+/* Particle effects */
+.particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: #ff6b6b;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 10;
+}
+
+.explosion {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    background: radial-gradient(circle, #ff6b6b 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 10;
+    animation: explosion 0.5s ease-out forwards;
+}
+
+@keyframes explosion {
+    0% { 
+        transform: scale(0);
+        opacity: 1;
+    }
+    100% { 
+        transform: scale(1);
+        opacity: 0;
+    }
+} 
