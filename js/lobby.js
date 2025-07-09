@@ -33,7 +33,7 @@ class LobbyManager {
             });
 
             card.addEventListener('mouseenter', () => {
-                if (audioManager) {
+                if (typeof audioManager !== 'undefined' && audioManager) {
                     audioManager.playUISound('hover');
                 }
             });
@@ -47,7 +47,7 @@ class LobbyManager {
         // UI sound effects
         document.querySelectorAll('.btn').forEach(btn => {
             btn.addEventListener('click', () => {
-                if (audioManager) {
+                if (typeof audioManager !== 'undefined' && audioManager) {
                     audioManager.playUISound('click');
                 }
             });
@@ -101,7 +101,7 @@ class LobbyManager {
             victoryTitle.textContent = 'Victory!';
             victoryTitle.style.color = '#4CAF50';
             
-            if (audioManager) {
+            if (typeof audioManager !== 'undefined' && audioManager) {
                 audioManager.playVictorySound();
             }
         } else {
@@ -382,7 +382,7 @@ class LobbyManager {
         document.querySelector(`[data-champion="${championType}"]`).classList.add('selected');
 
         // Play sound
-        if (audioManager) {
+        if (typeof audioManager !== 'undefined' && audioManager) {
             audioManager.playChampionSelectSound();
         }
 
@@ -468,7 +468,7 @@ class LobbyManager {
         }
         
         // Play round start sound
-        if (audioManager) {
+        if (typeof audioManager !== 'undefined' && audioManager) {
             audioManager.playRoundStartSound();
         }
     }
@@ -498,7 +498,7 @@ class LobbyManager {
         }
         
         // Play round start sound
-        if (audioManager) {
+        if (typeof audioManager !== 'undefined' && audioManager) {
             audioManager.playRoundStartSound();
         }
     }
@@ -506,7 +506,7 @@ class LobbyManager {
     // Handle round end
     handleRoundEnd(gameState) {
         // Play round end sound
-        if (audioManager) {
+        if (typeof audioManager !== 'undefined' && audioManager) {
             audioManager.playRoundEndSound();
         }
         
