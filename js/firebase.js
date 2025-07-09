@@ -306,8 +306,8 @@ class FirebaseManager {
         }
 
         try {
-            // Clean up old games first (older than 1 hour)
-            await this.cleanupOldGames();
+            // Temporarily disable cleanup to test
+            // await this.cleanupOldGames();
             
             const gamesRef = this.firebaseFunctions.collection(this.db, 'games');
             const q = this.firebaseFunctions.query(
