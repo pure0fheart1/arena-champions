@@ -50,7 +50,7 @@ A dynamic 1v1 top-down shooter featuring unique champions with tactical abilitie
 
 1. **Clone the repository**
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/pure0fheart1/arena-champions.git
    cd arena-champions
    ```
 
@@ -352,4 +352,4 @@ For issues and questions:
 
 ---
 
-**Have fun playing Arena Champions!** 🎮⚔️ 
+**Have fun playing Arena Champions!** 🎮⚔️
