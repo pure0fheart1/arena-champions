@@ -298,43 +298,68 @@ class FirebaseManager {
         }
     }
 
-    // Get list of public games
+    // Get public games with cleanup
     async getPublicGames() {
         if (CONFIG.DEMO_MODE) {
             console.log('Demo mode: No online games available');
-            return []; // Return empty array in demo mode
+            return [];
         }
 
         try {
+            // Clean up old games first (older than 1 hour)
+            await this.cleanupOldGames();
+            
             const gamesRef = this.firebaseFunctions.collection(this.db, 'games');
             const q = this.firebaseFunctions.query(
                 gamesRef,
                 this.firebaseFunctions.where('isPublic', '==', true),
                 this.firebaseFunctions.where('state', '==', 'waiting'),
-                this.firebaseFunctions.orderBy('createdAt', 'desc')
+                this.firebaseFunctions.orderBy('createdAt', 'desc'),
+                this.firebaseFunctions.limit(10) // Limit to 10 most recent games
             );
-
-            const snapshot = await this.firebaseFunctions.getDocs(q);
+            
+            const querySnapshot = await this.firebaseFunctions.getDocs(q);
             const games = [];
             
-            snapshot.forEach((doc) => {
+            querySnapshot.forEach((doc) => {
                 const gameData = doc.data();
-                const playerCount = Object.keys(gameData.players).length;
-                if (playerCount < 2) {
-                    games.push({
-                        id: doc.id,
-                        hostName: gameData.hostName,
-                        playerCount: playerCount,
-                        createdAt: gameData.createdAt
-                    });
-                }
+                games.push({
+                    id: doc.id,
+                    ...gameData
+                });
             });
-
+            
+            console.log('Found public games:', games.length);
             return games;
-
         } catch (error) {
             console.error('Error getting public games:', error);
             return [];
+        }
+    }
+
+    // Clean up old games (older than 1 hour)
+    async cleanupOldGames() {
+        try {
+            const oneHourAgo = Date.now() - (60 * 60 * 1000); // 1 hour ago
+            const gamesRef = this.firebaseFunctions.collection(this.db, 'games');
+            const q = this.firebaseFunctions.query(
+                gamesRef,
+                this.firebaseFunctions.where('createdAt', '<', oneHourAgo)
+            );
+            
+            const querySnapshot = await this.firebaseFunctions.getDocs(q);
+            const batch = this.firebaseFunctions.writeBatch(this.db);
+            
+            querySnapshot.forEach((doc) => {
+                batch.delete(doc.ref);
+            });
+            
+            if (querySnapshot.size > 0) {
+                await batch.commit();
+                console.log(`Cleaned up ${querySnapshot.size} old games`);
+            }
+        } catch (error) {
+            console.error('Error cleaning up old games:', error);
         }
     }
 
